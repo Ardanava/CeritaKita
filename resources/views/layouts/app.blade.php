@@ -10,7 +10,7 @@
     <!-- =========================
         ✅ PAGE TITLE (Dynamic)
     ========================== -->
-    <title>@yield('title', 'CeritaKita')</title>
+    <title>@yield('title', 'VerseGate')</title>
 
     <!-- =========================
         ✅ TAILWIND CSS

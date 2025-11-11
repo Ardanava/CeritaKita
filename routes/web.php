@@ -8,6 +8,12 @@ use App\Http\Controllers\WorkdeskController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\EditorUploadController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportAdminController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\Admin\FeedbackAdminController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +35,18 @@ Route::view('/developer', 'pengembang.index')->name('about.developer');
 // ===== ROUTE PUBLIK: Cerita & Bab =====
 Route::get('/stories/{slug}', [StoryController::class, 'show'])->name('stories.show'); // versi path lain
 Route::get('/stories/{storySlug}/{chapterSlug}', [ChapterController::class, 'showChapter'])->name('stories.chapter');
+
+// ===== ROUTE LAPORAN (Publik) =====
+Route::post('/reports', [ReportController::class, 'store'])
+  ->name('reports.store')
+  ->middleware('throttle:10,1'); // anti-spam ringan
+
+// ===== ROUTE SARAN/MASUKAN (Publik) =====
+    Route::get('/feedback',  [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
+
+
 
 
 // ===== ROUTE WORKDESK & KONTEN ADMIN (Dilindungi) =====
@@ -86,3 +104,22 @@ Route::controller(AuthController::class)->group(function () {
 
 // ===== ROUTE UPLOAD (Editor) =====
 Route::post('/editor/upload-image', [EditorUploadController::class, 'image'])->name('editor.image.upload');
+
+// ===== ROUTE ADMIN: Manajemen Laporan =====
+Route::middleware(['auth']) // kalau mau batasi admin saja, tambahkan middleware 'can:manage-reports'
+    ->prefix('admin/reports')
+    ->name('admin.reports.')
+    ->group(function () {
+        Route::get('/', [ReportAdminController::class, 'index'])->name('index');
+        Route::get('/{report}', [ReportAdminController::class, 'show'])->name('show');
+        Route::patch('/{report}', [ReportAdminController::class, 'update'])->name('update'); // ubah status
+        Route::delete('/{report}', [ReportAdminController::class, 'destroy'])->name('destroy'); // opsional
+    });
+
+// ===== ROUTE ADMIN: Manajemen Saran/Masukan =====
+    Route::middleware(['auth'])->prefix('admin/feedback')->name('admin.feedback.')->group(function(){
+        Route::get('/',            [FeedbackAdminController::class, 'index'])->name('index');
+        Route::get('/{feedback}',  [FeedbackAdminController::class, 'show'])->name('show');
+        Route::patch('/{feedback}',[FeedbackAdminController::class, 'update'])->name('update');
+        Route::delete('/{feedback}',[FeedbackAdminController::class, 'destroy'])->name('destroy');
+    });

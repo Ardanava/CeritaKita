@@ -9,23 +9,12 @@
 
 <style>
   /* ============================================================
-     THEME SYSTEM — SCOPED KE READER SAJA
-     Semua variabel & warna hanya berlaku di dalam .reader-scope
+     THEME SYSTEM — SCOPE DI .reader-scope
      ============================================================ */
   .reader-scope{
-    /* default (fallback) — light */
-    --back: #F9FAFB;
-    --text: #1F2937;
-    --muted:#6B7280;
-    --surface: rgba(255,255,255,.9);
-    --card:#FFFFFF;
-    --border:#E5E7EB;
-    --blockquote:#cbd5e1;
-    --link:#2563eb;
+    --back:#F9FAFB; --text:#1F2937; --muted:#6B7280;
+    --surface: rgba(255,255,255,.9); --card:#FFFFFF; --border:#E5E7EB; --blockquote:#cbd5e1; --link:#2563eb;
   }
-  body.reader-bg-sync{ background-color: var(--ck-page-back) !important; }
-  main{ background: transparent; } /* supaya main tidak ikut memutihkan */
-
   .reader-scope[data-theme="light"]{
     --back:#F9FAFB; --text:#1F2937; --muted:#6B7280;
     --surface: rgba(255,255,255,.9); --card:#FFFFFF; --border:#E5E7EB; --blockquote:#cbd5e1; --link:#2563eb;
@@ -39,52 +28,23 @@
     --surface: rgba(17,24,39,.92); --card:#111827; --border:#374151; --blockquote:#334155; --link:#93C5FD;
   }
 
-  /* ============================================================
-   MODIFIKASI: Kunci UI & Sidebar ke Tema Light
-   ============================================================ */
+  /* Sinkron warna body (area luar wrapper) */
+  body.reader-bg-sync{ background-color: var(--ck-page-back) !important; }
+  main{ background: transparent; }
 
-  /* 1. Buat class baru untuk area konten yang warnanya berubah */
-  .reader-scope .reader-content-area {
+  /* ============================================================
+     Kunci UI & Sidebar ke tema LIGHT
+     ============================================================ */
+  .reader-scope .reader-content-area { color: var(--text); }
+  .reader-scope #chapter-sidebar, .reader-scope .surface-bar {
+    --text:#1F2937; --muted:#6B7280; --surface:rgba(255,255,255,.9);
+    --card:#FFFFFF; --border:#E5E7EB; --link:#2563eb; --blockquote:#cbd5e1;
     color: var(--text);
   }
+  .reader-scope #chapter-sidebar { background: var(--card); border-right:1px solid var(--border); }
+  .reader-scope .surface-bar { background: var(--surface); border-bottom:1px solid var(--border); }
 
-  /* 2. Paksa Sidebar & UI untuk SELALU menggunakan variabel Light Theme */
-  .reader-scope #chapter-sidebar,
-  .reader-scope .surface-bar {
-    /* * Definisikan ulang SEMUA variabel tema ke nilai 'light'
-    * Ini akan meng-override variabel dari [data-theme="dark/sepia"]
-    * untuk elemen-elemen ini dan semua turunannya.
-    */
-    --text: #1F2937;
-    --muted: #6B7280;
-    --surface: rgba(255,255,255,.9);
-    --card: #FFFFFF;
-    --border: #E5E7EB;
-    --link: #2563eb;
-    --blockquote: #cbd5e1; /* Walau tidak terpakai di UI, ini untuk kelengkapan */
-
-    /* Atur warna default untuk UI/Sidebar */
-    color: var(--text); 
-  }
-
-  /* * Terapkan style spesifik (background/border)
-  * menggunakan variabel 'light' yang baru saja kita paksa
-  */
-  .reader-scope #chapter-sidebar {
-    background: var(--card);
-    border-right-color: var(--border);
-  }
-  .reader-scope .surface-bar {
-    background: var(--surface);
-    border-bottom-color: var(--border);
-  }
-  /* ============================================================
-    AKHIR MODIFIKASI
-    ============================================================ */
-
-  /* ============================================================
-     BASE DI DALAM READER (tidak menyentuh body/global)
-     ============================================================ */
+  /* Base dalam reader */
   .reader-scope{ background: var(--back); }
   .reader-scope a{ color: var(--link); }
   .reader-scope .muted{ color: var(--muted); }
@@ -105,24 +65,109 @@
   .reader-scope .story-content h1,.reader-scope .story-content h2,.reader-scope .story-content h3{ font-weight:700; margin:1.5rem 0 1rem; }
   .reader-scope .story-content blockquote{ border-left:4px solid var(--blockquote); margin:1rem 0; padding-left:1rem; font-style:italic; }
 
-  /* Elemen permukaan yang mengikuti tema */
-  .reader-scope .surface-bar{ background: var(--surface); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom:1px solid var(--border); }
+  /* Permukaan tematik */
   .reader-scope .surface-card{ background: var(--card); color: var(--text); }
   .reader-scope .soft-border{ border:1px solid var(--border); }
   .reader-scope .shadow-weak{ box-shadow: 0 1px 2px rgba(0,0,0,.04); }
 
-  /* Progress bar */
+  /* Progress */
   .reader-scope .progress-bar-wrap{ position:sticky; top:0; z-index:50; height:3px; }
   .reader-scope .progress-bar{ width:0%; height:3px; background:linear-gradient(90deg,#3B82F6,#8B5CF6); transition:width .1s linear; }
 
-  /* Sidebar */
-  .reader-scope #chapter-sidebar{ background: var(--card); color: var(--text); border-right:1px solid var(--border); }
-
-  /* Donation card */
+  /* Donation */
   .reader-scope .donation-card{ background: var(--card); color: var(--text); border:1px solid var(--border); }
 
-  /* Sticky UI wrapper */
+  /* Sticky UI */
   .reader-scope #ui-wrapper{ position:sticky; top:0; z-index:40; transition:transform .25s ease; will-change:transform; transform:translateY(0); }
+
+  /* ============================================================
+     REPORT MODAL — Fixed palette (tidak ikut tema)
+     ============================================================ */
+  #reportModal .modal-card{
+    background:#ffffff !important;
+    color:#1f2937 !important;            /* slate-800 */
+    border:1px solid #e5e7eb;            /* slate-200 */
+    border-radius: 1rem;
+  }
+  #reportModal .modal-divider{ border-bottom:1px solid #e5e7eb; }
+  #reportModal .modal-muted{ color:#6b7280; }
+  #reportModal .modal-overlay{ background: rgba(0,0,0,.5); }
+
+  /* Inputs */
+  #reportModal .ck-input,
+  #reportModal .ck-textarea,
+  #reportModal .ck-select-input{
+    background:#ffffff; color:#1f2937;
+    border:1.5px solid #e5e7eb; border-radius:.75rem;
+    padding:.6rem .8rem; width:100%;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.04);
+  }
+  #reportModal .ck-input:focus,
+  #reportModal .ck-textarea:focus,
+  #reportModal .ck-select-input:focus{
+    outline:none; border-color:#60a5fa;            /* blue-400 */
+    box-shadow:0 0 0 3px rgba(96,165,250,.35);
+  }
+
+  /* Buttons (kontras) */
+  #reportModal .ck-btn{
+    border-radius:9999px; padding:.5rem 1rem; font-weight:600;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, filter .15s ease;
+  }
+  #reportModal .ck-btn-outline{
+    background:#ffffff; color:#111827; border:1.5px solid #d1d5db;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(16,24,40,.05);
+  }
+  #reportModal .ck-btn-outline:hover{ background:#f9fafb; border-color:#cbd5e1; }
+  #reportModal .ck-btn-outline:active{ background:#f3f4f6; border-color:#94a3b8; }
+  #reportModal .ck-btn-outline:focus-visible{
+    outline:none; border-color:#60a5fa; box-shadow:0 0 0 3px rgba(96,165,250,.35);
+  }
+
+  #reportModal .ck-btn-primary{ background:#2563eb; color:#fff; border:1px solid transparent; }
+  #reportModal .ck-btn-primary:hover{ filter:brightness(.95); }
+  #reportModal .ck-btn-primary:focus-visible{ outline:none; box-shadow:0 0 0 3px rgba(96,165,250,.35); }
+  #reportModal .ck-btn-primary:disabled{ opacity:.7; cursor:not-allowed; }
+
+  /* === Custom Select (full styled) === */
+  #reportModal .cselect { position: relative; }
+  #reportModal .cselect-button{
+    display:flex; align-items:center; justify-content:space-between; gap:.5rem;
+    width:100%; padding:.6rem .9rem; border-radius:.75rem;
+    background:#fff; color:#1f2937; border:1.5px solid #e5e7eb;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.04);
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  #reportModal .cselect-button:focus-visible{
+    outline:none; border-color:#60a5fa; box-shadow:0 0 0 3px rgba(96,165,250,.35);
+  }
+  #reportModal .cselect-button .chev{
+    width:16px; height:16px; flex:none; opacity:.7; transition: transform .15s ease;
+    background: no-repeat center/16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath fill='%236b7280' d='M5.23 7.21a.75.75 0 011.06.02L10 10.17l3.71-2.94a.75.75 0 111.06 1.06l-4.24 3.36a.75.75 0 01-.94 0L5.21 8.29a.75.75 0 01.02-1.08z'/%3E%3C/svg%3E");
+  }
+  #reportModal .cselect[aria-expanded="true"] .chev{ transform: rotate(180deg); }
+
+  #reportModal .cselect-panel{
+    position:absolute; left:0; right:0; margin-top:.35rem; z-index:10;
+    max-height:260px; overflow:auto;
+    background:#fff; border:1.5px solid #e5e7eb; border-radius:.75rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+  }
+  #reportModal .cselect-option{
+    padding:.55rem .9rem; cursor:pointer; white-space:nowrap; display:flex; align-items:center; gap:.5rem;
+  }
+  #reportModal .cselect-option:hover{ background:#f3f4f6; }
+  #reportModal .cselect-option[aria-selected="true"]{
+    background:#eff6ff; color:#1e40af;
+  }
+  #reportModal .cselect-option .tick{
+    width:16px; height:16px; flex:none; visibility:hidden;
+    background:no-repeat center/16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%231e40af' d='M16.704 5.29a1 1 0 010 1.414l-7.071 7.07a1 1 0 01-1.415 0L3.296 8.853a1 1 0 111.415-1.414l3.122 3.121 6.364-6.364a1 1 0 011.414 0z'/%3E%3C/svg%3E");
+  }
+  #reportModal .cselect-option[aria-selected="true"] .tick{ visibility:visible; }
+
+  /* FAB hover */
+  #scrollToTopBtn:hover, #reportFabBtn:hover { filter: brightness(.92); }
 
   /* Mobile */
   @media (max-width:640px){
@@ -164,40 +209,27 @@
 
   {{-- ===================== UI WRAPPER (HEADER + CONTROLS) : START ===================== --}}
   <div id="ui-wrapper">
-    {{-- ========== MAIN HEADER (Brand/Home, Titles, Chapter List) : START ========== --}}
+    {{-- ========== MAIN HEADER : START ========== --}}
     <header id="main-header" class="surface-bar shadow-weak">
-      {{-- --- NAV WRAPPER : START --- --}}
       <nav class="mx-auto max-w-screen-xl px-4 lg:px-8 py-4 flex justify-between items-center">
-        {{-- --- BRAND / HOME LINK : START --- --}}
         <a href="{{ route('home') }}" class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-500 text-transparent bg-clip-text">
-          CeritaKita
+          VerseGate
         </a>
-        {{-- --- BRAND / HOME LINK : END --- --}}
-
-        {{-- --- CENTERED TITLES (Story & Chapter) : START --- --}}
         <div class="text-center hidden md:block">
           <h1 class="font-semibold">{{ $story->title }}</h1>
           <p class="text-sm muted">{{ $chapter->title }}</p>
         </div>
-        {{-- --- CENTERED TITLES (Story & Chapter) : END --- --}}
-
-        {{-- --- OPEN SIDEBAR BUTTON (Daftar Bab) : START --- --}}
-        <button id="open-sidebar-btn"
-                class="px-4 py-2 text-sm rounded-full soft-border hover:bg-black/5 transition-colors"
-                aria-label="Buka daftar bab">
+        <button id="open-sidebar-btn" class="px-4 py-2 text-sm rounded-full soft-border hover:bg-black/5 transition-colors" aria-label="Buka daftar bab">
           <i class="fa-solid fa-list-ul sm:mr-2"></i>
           <span class="hidden sm:inline">Daftar Bab</span>
         </button>
-        {{-- --- OPEN SIDEBAR BUTTON (Daftar Bab) : END --- --}}
       </nav>
-      {{-- --- NAV WRAPPER : END --- --}}
     </header>
     {{-- ========== /MAIN HEADER : END ========== --}}
 
-    {{-- ========== READER CONTROLS (Prev / Info / Next + Font/Theme) : START ========== --}}
+    {{-- ========== READER CONTROLS : START ========== --}}
     <div id="reader-controls" class="surface-bar">
       <div class="mx-auto max-w-screen-xl px-4 lg:px-8 py-3 flex justify-between items-center">
-        {{-- --- NAV BUTTONS (Prev, Info, Next) : START --- --}}
         <div class="flex items-center gap-2">
           @if($chapter->previous)
           <a href="{{ route('stories.chapter', ['storySlug'=>$story->slug,'chapterSlug'=>$chapter->previous->slug]) }}"
@@ -218,9 +250,7 @@
           </a>
           @endif
         </div>
-        {{-- --- NAV BUTTONS (Prev, Info, Next) : END --- --}}
 
-        {{-- --- QUICK SETTINGS (Font size & Theme) : START --- --}}
         <div class="flex items-center gap-3 sm:gap-4">
           {{-- font popup --}}
           <div class="relative">
@@ -247,7 +277,6 @@
             </div>
           </div>
         </div>
-        {{-- --- QUICK SETTINGS (Font size & Theme) : END --- --}}
       </div>
     </div>
     {{-- ========== /READER CONTROLS : END ========== --}}
@@ -306,8 +335,7 @@
       <div class="hidden sm:block"></div>
       @endif
 
-      <a href="{{ route('stories.show', $story->slug) }}#comment-section"
-         class="font-semibold text-center">Beri Ulasan Cerita</a>
+      <a href="{{ route('stories.show', $story->slug) }}#comment-section" class="font-semibold text-center">Beri Ulasan Cerita</a>
 
       @if($chapter->next)
       <a href="{{ route('stories.chapter', ['storySlug'=>$story->slug,'chapterSlug'=>$chapter->next->slug]) }}"
@@ -334,17 +362,89 @@
   </section>
   {{-- ===================== COMMENTS (SIMULASI DISQUS) : END ======================= --}}
 
-  {{-- ===================== SCROLL-TO-TOP BUTTON : START ===================== --}}
+  {{-- ===================== FABs ===================== --}}
   <button id="scrollToTopBtn"
-    class="hidden fixed bottom-6 right-6 sm:bottom-8 sm:right-8"
-    style="background:#2563eb;color:#fff;padding:.75rem;border-radius:9999px;box-shadow:0 10px 20px rgba(0,0,0,.12)">
+    class="hidden fixed bottom-6 right-6 sm:bottom-8 sm:right-8
+           bg-blue-600 text-white rounded-full shadow-lg w-14 h-14
+           flex items-center justify-center"
+    aria-label="Kembali ke atas">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 19V5m-7 7l7-7 7 7"/>
     </svg>
   </button>
-  {{-- ===================== SCROLL-TO-TOP BUTTON : END ======================= --}}
+
+  <button id="reportFabBtn"
+    class="fixed bottom-24 right-6 sm:bottom-28 sm:right-8 z-[70]
+           w-14 h-14 rounded-full bg-red-500 text-white shadow-lg
+           flex items-center justify-center"
+    aria-label="Laporkan masalah" title="Laporkan masalah">
+    <i class="fa-solid fa-flag text-xl"></i>
+  </button>
+
+  {{-- ===================== REPORT MODAL ===================== --}}
+  <div id="reportModal" class="fixed inset-0 z-[80] hidden" aria-modal="true" role="dialog" aria-labelledby="reportModalTitle">
+    <div id="reportBackdrop" class="absolute inset-0 modal-overlay"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="surface-card soft-border shadow-weak w-full max-w-lg modal-card">
+        <div class="p-4 modal-divider">
+          <div class="flex items-center justify-between">
+            <h3 id="reportModalTitle" class="text-lg font-semibold">Laporkan masalah</h3>
+            <button id="reportCloseBtn" class="modal-muted hover:text-blue-600" aria-label="Tutup dialog laporan">
+              <i class="fa-solid fa-times text-xl"></i>
+            </button>
+          </div>
+        </div>
+
+        <form id="reportForm" class="p-4 space-y-3" method="POST" action="{{ route('reports.store') }}">
+          @csrf
+          <input type="hidden" name="story_id" value="{{ $story->id }}">
+          <input type="hidden" name="chapter_id" value="{{ $chapter->id }}">
+          <input type="hidden" name="page_url" value="{{ url()->current() }}">
+          <input type="text" name="hp_field" class="hidden" tabindex="-1" autocomplete="off">
+
+          <label class="block">
+            <span class="text-sm modal-muted">Kategori</span>
+            {{-- Custom Select --}}
+            <div class="cselect mt-1" id="catSelect" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+              <button type="button" class="cselect-button" id="catSelectBtn" aria-labelledby="catSelectBtn catSelectLabel">
+                <span id="catSelectLabel">Pilih…</span>
+                <i class="chev" aria-hidden="true"></i>
+              </button>
+              <input type="hidden" name="category" id="catSelectValue" value="">
+              <ul class="cselect-panel hidden" id="catSelectList" role="listbox" aria-labelledby="catSelectBtn" tabindex="-1">
+                <li class="cselect-option" role="option" data-value="Typo"><i class="tick"></i><span>Typo</span></li>
+                <li class="cselect-option" role="option" data-value="Link rusak"><i class="tick"></i><span>Link rusak</span></li>
+                <li class="cselect-option" role="option" data-value="Bug UI/UX"><i class="tick"></i><span>Bug UI/UX</span></li>
+                <li class="cselect-option" role="option" data-value="Konten tidak sesuai"><i class="tick"></i><span>Konten tidak sesuai</span></li>
+                <li class="cselect-option" role="option" data-value="Lainnya"><i class="tick"></i><span>Lainnya</span></li>
+              </ul>
+            </div>
+          </label>
+
+          <label class="block">
+            <span class="text-sm modal-muted">Jelaskan masalahnya</span>
+            <textarea name="description" rows="4" required minlength="10" maxlength="2000"
+              class="ck-textarea mt-1"
+              placeholder="Contoh: paragraf ke-3 ada typo, tombol 'Bab Selanjutnya' tidak bisa diklik, dsb."></textarea>
+          </label>
+
+          <div class="flex items-center justify-end gap-2 pt-2">
+            <button type="button" id="reportCancelBtn" class="ck-btn ck-btn-outline">Batal</button>
+            <button type="submit" id="reportSubmitBtn" class="ck-btn ck-btn-primary">Kirim</button>
+          </div>
+
+          <p id="reportSuccess" class="hidden text-green-600 text-sm mt-1">
+            Terima kasih! Laporan kamu sudah terkirim.
+          </p>
+          <p id="reportError" class="hidden text-red-600 text-sm mt-1">
+            Gagal mengirim laporan. Coba lagi.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-{{-- ===================== /READER WRAPPER (SCOPE TEMA) : END ===================== --}}
+{{-- ===================== /READER WRAPPER ===================== --}}
 @endsection
 
 @push('scripts')
@@ -353,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ============================================================
    *  CACHE DOM
    * ============================================================ */
-  const wrapper = document.getElementById('reader-wrapper'); // SCOPED THEME TARGET
+  const wrapper = document.getElementById('reader-wrapper');
   const storyContent = document.getElementById('story-content-wrapper');
   const uiWrapper    = document.getElementById('ui-wrapper');
   const openSidebarBtn  = document.getElementById('open-sidebar-btn');
@@ -374,13 +474,41 @@ document.addEventListener('DOMContentLoaded', function () {
   const progressEl = document.getElementById('read-progress');
   const toTopBtn   = document.getElementById('scrollToTopBtn');
 
+  // Report elements
+  const reportFabBtn     = document.getElementById('reportFabBtn');
+  const reportModal      = document.getElementById('reportModal');
+  const reportBackdrop   = document.getElementById('reportBackdrop');
+  const reportCloseBtn   = document.getElementById('reportCloseBtn');
+  const reportCancelBtn  = document.getElementById('reportCancelBtn');
+  const reportForm       = document.getElementById('reportForm');
+  const reportSuccess    = document.getElementById('reportSuccess');
+  const reportError      = document.getElementById('reportError');
+  const reportSubmitBtn  = document.getElementById('reportSubmitBtn');
+
   /* ============================================================
-   *  THEME INIT + PERSIST (SCOPED KE WRAPPER)
+   *  THEME INIT + PERSIST + SYNC BODY
    * ============================================================ */
-  function systemTheme(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-  function applyTheme(t){ wrapper?.setAttribute('data-theme', t); try{ localStorage.setItem('ck_theme', t);}catch{} }
-  const saved = (()=>{ try{ return localStorage.getItem('ck_theme'); }catch{return null} })();
-  applyTheme(saved || systemTheme());
+  document.body.classList.add('reader-bg-sync');
+
+  function systemTheme(){
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function syncPageBackgroundToTheme() {
+    if (!wrapper) return;
+    const cs   = getComputedStyle(wrapper);
+    const back = (cs.getPropertyValue('--back') || '').trim();
+    if (back) document.body.style.setProperty('--ck-page-back', back);
+  }
+
+  function applyTheme(t){
+    wrapper?.setAttribute('data-theme', t);
+    try { localStorage.setItem('ck_theme', t); } catch {}
+    syncPageBackgroundToTheme();
+  }
+
+  const savedTheme = (()=>{ try { return localStorage.getItem('ck_theme'); } catch { return null } })();
+  applyTheme(savedTheme || systemTheme());
 
   themeBtns.forEach(btn=>{
     btn.addEventListener('click', ()=>{
@@ -388,6 +516,13 @@ document.addEventListener('DOMContentLoaded', function () {
       themePopup?.classList.add('hidden');
     });
   });
+
+  try {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      const saved = localStorage.getItem('ck_theme');
+      if (!saved) applyTheme(systemTheme());
+    });
+  } catch {}
 
   /* ============================================================
    *  FONT SIZE
@@ -399,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
   incFont?.addEventListener('click', () => { setFontSize('22px'); fontPopup?.classList.add('hidden'); });
 
   /* ============================================================
-   *  POPUPS (FONT & THEME)
+   *  POPUPS
    * ============================================================ */
   function wirePopup(btn, panel){
     if (!btn || !panel) return;
@@ -496,60 +631,163 @@ document.addEventListener('DOMContentLoaded', function () {
     if (e.key === 'ArrowLeft')  { e.preventDefault(); window.location.assign(prevUrl); }
     if (e.key === 'ArrowRight') { e.preventDefault(); window.location.assign(nextUrl); }
   }, { passive: false });
-});
 
-function syncPageBackgroundToTheme() {
-    if (!wrapper) return;
-    // Ambil nilai --back yang sedang aktif di .reader-scope
-    const cs = getComputedStyle(wrapper);
-    const back = (cs.getPropertyValue('--back') || '').trim();
-    if (back) {
-      // Terapkan ke body agar area luar wrapper tidak putih
-      document.body.style.backgroundColor = back;
-    }
+  /* ============================================================
+   *  REPORT MODAL (open/close + a11y + submit)
+   * ============================================================ */
+  function lockScroll(lock) { document.body.style.overflow = lock ? 'hidden' : ''; }
+  function trapFocus(container, evt) {
+    const focusables = container.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusables.length) return;
+    const first = focusables[0], last = focusables[focusables.length - 1];
+    if (evt.key !== 'Tab') return;
+    if (evt.shiftKey && document.activeElement === first) { last.focus(); evt.preventDefault(); }
+    else if (!evt.shiftKey && document.activeElement === last) { first.focus(); evt.preventDefault(); }
   }
 
-  // Ubah applyTheme agar sekalian sinkron background halaman
-  document.body.classList.add('reader-bg-sync');
-
-  /* === THEME INIT + PERSIST (SCOPED KE WRAPPER) === */
-  function systemTheme(){ return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; }
-
-  // 🔥 BARU: fungsi sync yang benar2 membaca --back dari wrapper aktif
-  function syncPageBackgroundToTheme() {
-    if (!wrapper) return;
-    const cs   = getComputedStyle(wrapper);
-    const back = (cs.getPropertyValue('--back') || '').trim();
-    if (back) {
-      // pakai CSS var agar bisa di-!important lewat kelas body.reader-bg-sync
-      document.body.style.setProperty('--ck-page-back', back);
-    }
+  function openReport(){
+    reportModal?.classList.remove('hidden');
+    lockScroll(true);
+    reportModal.querySelector('button, select, textarea, input, [href]')?.focus();
+  }
+  function closeReport(){
+    reportModal?.classList.add('hidden');
+    lockScroll(false);
+    reportFabBtn?.focus();
   }
 
-  function applyTheme(t){
-    wrapper?.setAttribute('data-theme', t);
-    try{ localStorage.setItem('ck_theme', t);}catch{}
-    syncPageBackgroundToTheme(); // <-- penting
-  }
+  reportFabBtn?.addEventListener('click', openReport);
+  reportBackdrop?.addEventListener('click', closeReport);
+  reportCloseBtn?.addEventListener('click', closeReport);
+  reportCancelBtn?.addEventListener('click', closeReport);
 
-  const saved = (()=>{ try{ return localStorage.getItem('ck_theme'); }catch{return null} })();
-  applyTheme(saved || systemTheme());      // <-- langsung sinkron saat load
-
-  themeBtns.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      applyTheme(btn.dataset.theme || 'light'); // <-- sinkron tiap ganti tema
-      themePopup?.classList.add('hidden');
-    });
+  reportModal?.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); closeReport(); }
+    trapFocus(reportModal, e);
   });
 
-  try {
-    // jika user ubah theme OS dan tidak ada preferensi tersimpan
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-      const saved = localStorage.getItem('ck_theme');
-      if (!saved) applyTheme(systemTheme());
+  function showFieldErrors(form, errors){
+    form.querySelectorAll('.field-error').forEach(el => el.remove());
+    Object.entries(errors || {}).forEach(([name, msgs]) => {
+      const input = form.querySelector(`[name="${name}"]`);
+      if (!input) return;
+      const p = document.createElement('p');
+      p.className = 'field-error text-sm text-red-600 mt-1';
+      p.textContent = Array.isArray(msgs) ? msgs[0] : msgs;
+      input.closest('label')?.appendChild(p);
     });
-  } catch {}
+  }
 
+  reportForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    reportSuccess?.classList.add('hidden');
+    reportError?.classList.add('hidden');
+    showFieldErrors(reportForm, {});
 
+    try {
+      reportSubmitBtn.disabled = true;
+      const formData = new FormData(reportForm);
+      const res = await fetch(reportForm.action, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
+          'X-CSRF-TOKEN': formData.get('_token'),
+        },
+        body: formData
+      });
+
+      if (res.status === 422) {
+        const json = await res.json();
+        showFieldErrors(reportForm, json.errors);
+        reportError?.classList.remove('hidden');
+        return;
+      }
+
+      if (!res.ok) throw new Error('Bad status: ' + res.status);
+      const json = await res.json();
+      if (json?.ok) {
+        reportSuccess?.classList.remove('hidden');
+        reportForm.reset();
+        // reset custom select label juga
+        const catLabel = document.getElementById('catSelectLabel');
+        const catHidden = document.getElementById('catSelectValue');
+        if (catLabel && catHidden){ catLabel.textContent = 'Pilih…'; catHidden.value = ''; }
+        setTimeout(closeReport, 900);
+      } else {
+        throw new Error('Invalid response');
+      }
+    } catch (err) {
+      reportError?.classList.remove('hidden');
+      console.error(err);
+    } finally {
+      reportSubmitBtn.disabled = false;
+    }
+  });
+
+  /* ===== Custom Select: kategori ===== */
+  (function(){
+    const root   = document.getElementById('catSelect');
+    if (!root) return;
+    const btn    = document.getElementById('catSelectBtn');
+    const list   = document.getElementById('catSelectList');
+    const label  = document.getElementById('catSelectLabel');
+    const hidden = document.getElementById('catSelectValue');
+    const options= Array.from(list.querySelectorAll('.cselect-option'));
+
+    let open = false, activeIndex = -1;
+
+    function setOpen(v){
+      open = !!v;
+      root.setAttribute('aria-expanded', open ? 'true' : 'false');
+      list.classList.toggle('hidden', !open);
+      if (open) { list.focus(); highlightByValue(hidden.value); }
+    }
+    function selectByIndex(i){
+      if (i < 0 || i >= options.length) return;
+      const opt = options[i];
+      options.forEach(o => o.setAttribute('aria-selected','false'));
+      opt.setAttribute('aria-selected','true');
+      const val = opt.getAttribute('data-value');
+      hidden.value = val;
+      label.textContent = opt.innerText.trim();
+      activeIndex = i;
+      setOpen(false);
+      btn.focus();
+    }
+    function highlightByValue(val){
+      const i = options.findIndex(o => o.getAttribute('data-value') === val);
+      activeIndex = i >= 0 ? i : 0;
+      options.forEach((o, idx) => o.classList.toggle('is-active', idx === activeIndex));
+    }
+
+    btn.addEventListener('click', () => setOpen(!open));
+    document.addEventListener('click', (e) => { if (!root.contains(e.target)) setOpen(false); });
+
+    options.forEach((o, idx) => {
+      o.addEventListener('mouseenter', () => activeIndex = idx);
+      o.addEventListener('click', () => selectByIndex(idx));
+    });
+
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault(); setOpen(true);
+      }
+    });
+
+    list.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape'){ e.preventDefault(); setOpen(false); btn.focus(); return; }
+      if (e.key === 'Enter'){ e.preventDefault(); selectByIndex(activeIndex); return; }
+      if (e.key === 'ArrowDown'){ e.preventDefault(); activeIndex = Math.min(options.length-1, activeIndex+1); options[activeIndex].scrollIntoView({block:'nearest'}); return; }
+      if (e.key === 'ArrowUp'){ e.preventDefault(); activeIndex = Math.max(0, activeIndex-1); options[activeIndex].scrollIntoView({block:'nearest'}); return; }
+      if (e.key === 'Home'){ e.preventDefault(); activeIndex = 0; options[activeIndex].scrollIntoView({block:'nearest'}); return; }
+      if (e.key === 'End'){ e.preventDefault(); activeIndex = options.length-1; options[activeIndex].scrollIntoView({block:'nearest'}); return; }
+    });
+
+    reportForm?.addEventListener('submit', (e) => {
+      if (!hidden.value) { setOpen(true); list.focus(); }
+    });
+  })();
+});
 </script>
 @endpush
